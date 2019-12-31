@@ -126,19 +126,21 @@ public class chess {
 			 if(TimeBombRoundsOfPlay1==rounds)  
 			 {
 				 Chessboard=Bombtimebomb(Chessboard,rowOfTimeBombOfPlay1,columnOfTimeBombOfPlay1,ChessboardLine);
+				 Chessboard=CheckBoard(Chessboard,ChessboardLine);	
 				 DressBoard(Chessboard);
 				 totalChess=CountTotalChess(Chessboard,ChessboardLine);
-				 rounds++;
+    
 			 }
 			 else if(TimeBombRoundsOfPlay2==rounds)
 		    {
 			   Chessboard=Bombtimebomb(Chessboard,rowOfTimeBombOfPlay2,columnOfTimeBombOfPlay2,ChessboardLine);
+			   Chessboard=CheckBoard(Chessboard,ChessboardLine);	    
 			   DressBoard(Chessboard);
 			   totalChess=CountTotalChess(Chessboard,ChessboardLine);
-			   rounds++;
+	    
+               
 		    }
-			 
-			    
+			 //    
 	            if(totalChess==42)
 	            {
 	            	System.out.printf("The chessboard is full. This game is a draw\n");
@@ -147,6 +149,23 @@ public class chess {
 				}		    
 			  
 			    }
+	    public static char[][] CheckBoard(char[][] Chessboard,char ChessboardLine)
+	    {
+	    	for(int times=0;times<=2;times++)
+	    	{
+	    		for(int r=0;r<=4;r++)
+	    		{
+	    			for(int c=6;c>=0;c--) {
+	    				if(Chessboard[r][c]=='-'&&Chessboard[r+1][c]!='-')
+	    				{
+	    					Chessboard[r][c]=Chessboard[r+1][c];
+	    					Chessboard[r+1][c]='-';
+	    				}
+	    			}
+	    		}
+	    	}
+	    	return Chessboard;
+	    }
 	    public static int CountTotalChess(char[][] Chessboard,char ChessboardLine)
 	    {
 	    	int totalChess=0;
@@ -161,45 +180,44 @@ public class chess {
 	    		}
 	    	}
 	    	return totalChess;
-	    }
-	   
+	    }  
 		public static char[][] Bombtimebomb(char[][] Chessboard,int r,int c ,char ChessboardLine)
 		{   Chessboard[r][c]=ChessboardLine;
-		if((r+1)>=0&&(r+1)<7&&c>=0&&c<7)
+		if((r+1)>=0&&(r+1)<6&&c>=0&&c<7)
 		{
 			Chessboard[r+1][c]=ChessboardLine;	
 		}
-		if((r-1)>=0&&(r-1)<7&&c>=0&&c<7)
+		if((r-1)>=0&&(r-1)<6&&c>=0&&c<7)
 		{
 			Chessboard[r-1][c]=ChessboardLine;
 			
 		}
-		if(r>=0&&r<7&&(c+1)>=0&&(c+1)<7)
+		if(r>=0&&r<6&&(c+1)>=0&&(c+1)<7)
 		{
 			Chessboard[r][c+1]=ChessboardLine;
 			
 		}
-		if(r>=0&&r<7&&(c-1)>=0&&(c-1)<7)
+		if(r>=0&&r<6&&(c-1)>=0&&(c-1)<7)
 		{
 			Chessboard[r][c-1]=ChessboardLine;
 			
 		}
-		if((r-1)>=0&&(r-1)<7&&(c+1)>=0&&(c+1)<7)
+		if((r-1)>=0&&(r-1)<6&&(c+1)>=0&&(c+1)<7)
 		{
 			Chessboard[r-1][c+1]=ChessboardLine;
 			
 		}
-		if((r+1)>=0&&(r+1)<7&&(c-1)>=0&&(c-1)<7)
+		if((r+1)>=0&&(r+1)<6&&(c-1)>=0&&(c-1)<7)
 		{
 			Chessboard[r+1][c-1]=ChessboardLine;
 			
 		}
-		if((r+1)>=0&&(r+1)<7&&(c+1)>=0&&(c+1)<7)
+		if((r+1)>=0&&(r+1)<6&&(c+1)>=0&&(c+1)<7)
 		{
 			Chessboard[r+1][c+1]=ChessboardLine;
 			
 		}
-		if((r-1)>=0&&(r-1)<7&&(c-1)>=0&&(c-1)<7)
+		if((r-1)>=0&&(r-1)<6&&(c-1)>=0&&(c-1)<7)
 		{
 			Chessboard[r-1][c-1]=ChessboardLine;
 			
