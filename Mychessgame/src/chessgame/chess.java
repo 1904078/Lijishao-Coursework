@@ -123,7 +123,7 @@ public class chess {
 					break;
 				}
 			    }
-			 if(TimeBombRoundsOfPlay1==rounds)  
+			 if(TimeBombRoundsOfPlay1==rounds&&Chessboard[rowOfTimeBombOfPlay1][columnOfTimeBombOfPlay1]=='*')  
 			 {
 				 Chessboard=Bombtimebomb(Chessboard,rowOfTimeBombOfPlay1,columnOfTimeBombOfPlay1,ChessboardLine);
 				 Chessboard=CheckBoard(Chessboard,ChessboardLine);	
@@ -131,7 +131,7 @@ public class chess {
 				 totalChess=CountTotalChess(Chessboard,ChessboardLine);
     
 			 }
-			 else if(TimeBombRoundsOfPlay2==rounds)
+			 else if(TimeBombRoundsOfPlay2==rounds&&Chessboard[rowOfTimeBombOfPlay2][columnOfTimeBombOfPlay2]=='*')
 		    {
 			   Chessboard=Bombtimebomb(Chessboard,rowOfTimeBombOfPlay2,columnOfTimeBombOfPlay2,ChessboardLine);
 			   Chessboard=CheckBoard(Chessboard,ChessboardLine);	    
