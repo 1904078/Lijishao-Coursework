@@ -29,7 +29,6 @@ public class chess {
 			    {  
 			    	if(timesOfBlitz[rounds%2]==1)
 			    	{
-			    	//调用瞬时炸弹函数
 			    	System.out.printf("Blitz please select column >");
 			        column=Integer.parseInt(stdin.nextLine())-1;
 			    	for( int row=0;row<6;row++)
@@ -106,10 +105,9 @@ public class chess {
 			    }
 			    else if(modeAscii>=49&&modeAscii<56)//1-7
 			    {
-			    	//调用下棋函数
+			    	
 			    column=modeAscii-49;
-			  //下棋
-			    boolean ifCanPlace=IfCanPlacePiece(column,Chessboard,ChessboardLine);
+				boolean ifCanPlace=IfCanPlacePiece(column,Chessboard,ChessboardLine);
 			    if(ifCanPlace)
 			    {
 			      placerow=Place(column,rounds,Chessboard,ChessboardLine,chesspiece);
@@ -119,14 +117,14 @@ public class chess {
 				//Judge if anyone wins
 				if(judgeWinner(Chessboard,Chessboard[placerow][column],placerow,column))
 				{
-					System.out.printf("Congratulations,play %d wins",rounds%2+1);
+					System.out.printf("Congratulations,play %d wins",rounds%2);
 					break;
 				}
 			    }
 			 if(TimeBombRoundsOfPlay1==rounds&&Chessboard[rowOfTimeBombOfPlay1][columnOfTimeBombOfPlay1]=='*')  
 			 {
 				 Chessboard=Bombtimebomb(Chessboard,rowOfTimeBombOfPlay1,columnOfTimeBombOfPlay1,ChessboardLine);
-				 Chessboard=CheckBoard(Chessboard,ChessboardLine);	
+				 Chessboard=FallDownChess(Chessboard,ChessboardLine);	
 				 DressBoard(Chessboard);
 				 totalChess=CountTotalChess(Chessboard,ChessboardLine);
     
@@ -134,7 +132,7 @@ public class chess {
 			 else if(TimeBombRoundsOfPlay2==rounds&&Chessboard[rowOfTimeBombOfPlay2][columnOfTimeBombOfPlay2]=='*')
 		    {
 			   Chessboard=Bombtimebomb(Chessboard,rowOfTimeBombOfPlay2,columnOfTimeBombOfPlay2,ChessboardLine);
-			   Chessboard=CheckBoard(Chessboard,ChessboardLine);	    
+			   Chessboard=FallDownChess(Chessboard,ChessboardLine);	    
 			   DressBoard(Chessboard);
 			   totalChess=CountTotalChess(Chessboard,ChessboardLine);
 	    
@@ -149,7 +147,45 @@ public class chess {
 				}		    
 			  
 			    }
-	    public static char[][] CheckBoard(char[][] Chessboard,char ChessboardLine)
+	    public static void Initchessboard(char[][] Chessboard,char ChessboardLine)
+	    {
+	    	for(int i = 0;i < Chessboard.length;i++)
+	    {
+	       for(int j = 0;j < Chessboard[0].length;j++)
+	    {
+	    	Chessboard[i][j] = ChessboardLine;
+	    }
+	    }	
+	    }
+	    public static int InputMode(int rounds,char[][] Chessboard,char ChessboardLine)
+	    {  
+	    	int i=rounds%2+1;//i==1:play1; i==2:play2
+	    	int modeAscii=0;
+		    System.out.printf("Player %d Select Column > ",i);
+		    String mode=stdin.nextLine();//B,T or 1-7 
+		   if(mode.length()>1)
+		   {
+			   System.out.printf("The column you enter is not right,please enter again\n");
+			   modeAscii=InputMode(rounds,Chessboard,ChessboardLine);//如果不是B，T，也不是1-7，则重新输入
+		   }
+		   else
+		   {   
+			   char modechar=mode.charAt(0);
+			   if(modechar==66||modechar==84||(modechar>=49&&modechar<=55))
+		    {
+			  modeAscii=Integer.valueOf(modechar); 
+			
+		    }
+		   else
+		   {
+			   //If the input is not B，T，or numbers between 1 and 7,enter a mode again.
+		    System.out.printf("The column you enter is not right,please enter again\n");
+		    modeAscii=InputMode(rounds,Chessboard,ChessboardLine);
+		    }
+		   }
+		    return modeAscii;
+	    }
+	    public static char[][] FallDownChess(char[][] Chessboard,char ChessboardLine)
 	    {
 	    	for(int times=0;times<=2;times++)
 	    	{
@@ -181,49 +217,7 @@ public class chess {
 	    	}
 	    	return totalChess;
 	    }  
-		public static char[][] Bombtimebomb(char[][] Chessboard,int r,int c ,char ChessboardLine)
-		{   Chessboard[r][c]=ChessboardLine;
-		if((r+1)>=0&&(r+1)<6&&c>=0&&c<7)
-		{
-			Chessboard[r+1][c]=ChessboardLine;	
-		}
-		if((r-1)>=0&&(r-1)<6&&c>=0&&c<7)
-		{
-			Chessboard[r-1][c]=ChessboardLine;
-			
-		}
-		if(r>=0&&r<6&&(c+1)>=0&&(c+1)<7)
-		{
-			Chessboard[r][c+1]=ChessboardLine;
-			
-		}
-		if(r>=0&&r<6&&(c-1)>=0&&(c-1)<7)
-		{
-			Chessboard[r][c-1]=ChessboardLine;
-			
-		}
-		if((r-1)>=0&&(r-1)<6&&(c+1)>=0&&(c+1)<7)
-		{
-			Chessboard[r-1][c+1]=ChessboardLine;
-			
-		}
-		if((r+1)>=0&&(r+1)<6&&(c-1)>=0&&(c-1)<7)
-		{
-			Chessboard[r+1][c-1]=ChessboardLine;
-			
-		}
-		if((r+1)>=0&&(r+1)<6&&(c+1)>=0&&(c+1)<7)
-		{
-			Chessboard[r+1][c+1]=ChessboardLine;
-			
-		}
-		if((r-1)>=0&&(r-1)<6&&(c-1)>=0&&(c-1)<7)
-		{
-			Chessboard[r-1][c-1]=ChessboardLine;
-			
-		}
-			return Chessboard;
-		}
+		
 	    public static int Place(int column,int rounds,char[][] Chessboard,char ChessboardLine,char[] chesspiece)
 	    {
 	    	int Placerow=0;
@@ -243,44 +237,10 @@ public class chess {
 			DressBoard(Chessboard);	
 		return Placerow;
 	    }
-	    public static int InputMode(int rounds,char[][] Chessboard,char ChessboardLine)
-	    {  
-	    	int i=rounds%2+1;//i==1:play1; i==2:play2
-	    	int modeAscii=0;
-		    System.out.printf("Player %d Select Column > ",i);
-		    String mode=stdin.nextLine();//B,T or 1-7 
-		   if(mode.length()>1)
-		   {
-			   System.out.printf("The column you enter is not right,please enter again\n");
-			   modeAscii=InputMode(rounds,Chessboard,ChessboardLine);//如果不是B，T，也不是1-7，则重新输入
-		   }
-		   else
-		   {   
-			   char modechar=mode.charAt(0);
-			   if(modechar==66||modechar==84||(modechar>=49&&modechar<=55))
-		    {
-			  modeAscii=Integer.valueOf(modechar); 
-			
-		    }
-		   else
-		   {
-		    System.out.printf("The column you enter is not right,please enter again\n");
-		    modeAscii=InputMode(rounds,Chessboard,ChessboardLine);//如果不是B，T，也不是1-7，则重新输入
-		    }
-		   }
-		    return modeAscii;
-	    }
 
-	    public static void Initchessboard(char[][] Chessboard,char ChessboardLine)
-	    {
-	    	for(int i = 0;i < Chessboard.length;i++)
-	    {
-	       for(int j = 0;j < Chessboard[0].length;j++)
-	    {
-	    	Chessboard[i][j] = ChessboardLine;
-	    }
-	    }	
-	    }
+	 
+
+	   
 	    public static void DressBoard(char[][] Chessboard)
 	    {
 	       for(int i=1;i<=Chessboard[0].length;i++)
@@ -340,7 +300,49 @@ public class chess {
 	}
 	    return ifCanPlace;
 	}
-
+	public static char[][] Bombtimebomb(char[][] Chessboard,int r,int c ,char ChessboardLine)
+	{   Chessboard[r][c]=ChessboardLine;
+	if((r+1)>=0&&(r+1)<6&&c>=0&&c<7)
+	{
+		Chessboard[r+1][c]=ChessboardLine;	
+	}
+	if((r-1)>=0&&(r-1)<6&&c>=0&&c<7)
+	{
+		Chessboard[r-1][c]=ChessboardLine;
+		
+	}
+	if(r>=0&&r<6&&(c+1)>=0&&(c+1)<7)
+	{
+		Chessboard[r][c+1]=ChessboardLine;
+		
+	}
+	if(r>=0&&r<6&&(c-1)>=0&&(c-1)<7)
+	{
+		Chessboard[r][c-1]=ChessboardLine;
+		
+	}
+	if((r-1)>=0&&(r-1)<6&&(c+1)>=0&&(c+1)<7)
+	{
+		Chessboard[r-1][c+1]=ChessboardLine;
+		
+	}
+	if((r+1)>=0&&(r+1)<6&&(c-1)>=0&&(c-1)<7)
+	{
+		Chessboard[r+1][c-1]=ChessboardLine;
+		
+	}
+	if((r+1)>=0&&(r+1)<6&&(c+1)>=0&&(c+1)<7)
+	{
+		Chessboard[r+1][c+1]=ChessboardLine;
+		
+	}
+	if((r-1)>=0&&(r-1)<6&&(c-1)>=0&&(c-1)<7)
+	{
+		Chessboard[r-1][c-1]=ChessboardLine;
+		
+	}
+		return Chessboard;
+	}
 	}
 
 
