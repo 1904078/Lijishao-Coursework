@@ -5,7 +5,7 @@ public class chess {
 	    public static void main(String[] args)
 		{
 			char ChessboardLine='-';
-			char[][] Chessboard=new char[6][7];
+			char[][] Chessboard=new char[6][6];
 			char[] chesspiece= {'X','O'};//player 1:X; player 2:O
 			int[] timesOfBlitz= {1,1};//every player can play once
 			int[] timesOfTimeBomb={1,1};
@@ -24,9 +24,9 @@ public class chess {
 			//This variable is used to record the number of rounds after the time bomb is placed, 
 			//so as to determine the explosion time
 			int TimeBombRoundsOfPlay1=-1,TimeBombRoundsOfPlay2=-1;
-			while(totalChess<6*7)
+			while(totalChess<6*6)
 			{  
-				//choose chess playing mode:B,T or 1-7
+				//choose chess playing mode:B,T or 1-6
 				int modeAscii=InputMode(rounds,Chessboard,ChessboardLine);
 			    if(modeAscii==66)//B
 			    {  
@@ -107,7 +107,7 @@ public class chess {
 			    	}
 			    }
 			    }
-			    else if(modeAscii>=49&&modeAscii<56)//1-7
+			    else if(modeAscii>=49&&modeAscii<55)//1-7
 			    {
 			    	
 			    column=modeAscii-49;
@@ -121,8 +121,7 @@ public class chess {
 				//Judge if anyone wins
 				if(judgeWinner(Chessboard,Chessboard[placerow][column],placerow,column))
 				{
-					System.out.printf("Congratulations,play %d wins",(rounds-1)%2+11
-							);
+					System.out.printf("Congratulations,play %d wins",(rounds-1)%2+1);
 					break;
 				}
 			    }
@@ -146,7 +145,7 @@ public class chess {
                
 		    }
 			 //    
-	            if(totalChess==42)
+	            if(totalChess==36)
 	            {
 	            	System.out.printf("The chessboard is full. This game is a draw\n");
 	            	break;
@@ -188,7 +187,7 @@ public class chess {
 	    	int i=rounds%2+1;//i==1:play1; i==2:play2
 	    	int modeAscii=0;
 		    System.out.printf("Player %d Select Column > ",i);
-		    String mode=stdin.nextLine();//B,T or 1-7 
+		    String mode=stdin.nextLine();//B,T or 1-6
 		   if(mode.length()>1)
 		   {
 			   System.out.printf("The column you enter is not right,please enter again\n");
@@ -197,7 +196,7 @@ public class chess {
 		   else
 		   {   
 			   char modechar=mode.charAt(0);
-			   if(modechar==66||modechar==84||(modechar>=49&&modechar<=55))
+			   if(modechar==66||modechar==84||(modechar>=49&&modechar<=54))
 		    {
 			  modeAscii=Integer.valueOf(modechar); 
 			
@@ -255,7 +254,7 @@ public class chess {
 	    	int totalChess=0;
 	    	for(int r=0;r<6;r++)
 	    	{
-	    		for(int c=0;c<7;c++)
+	    		for(int c=0;c<6;c++)
 	    		{
 	    			if(Chessboard[r][c]!=ChessboardLine)
 	    			{
@@ -282,48 +281,49 @@ public class chess {
 	 {  
 		  r+=i;
 		  c+=j;
-		  if(r<0||c<0||r>=6||c>=7||Chessboard[r][c]!=CurrentChess)
+		  if(r<0||c<0||r>=6||c>=6||Chessboard[r][c]!=CurrentChess)
 		  return 0;
 		  return SearchChessNumber(Chessboard, CurrentChess,r,c, i, j)+1;
 	}
 	
 	public static char[][] Bombtimebomb(char[][] Chessboard,int r,int c ,char ChessboardLine)
 	{   Chessboard[r][c]=ChessboardLine;
-	if((r+1)>=0&&(r+1)<6&&c>=0&&c<7)
+	if((r+1)>=0&&(r+1)<6&&c>=0&&c<6)
 	{
 		Chessboard[r+1][c]=ChessboardLine;	
 	}
-	if((r-1)>=0&&(r-1)<6&&c>=0&&c<7)
+	if((r-1)>=0&&(r-1)<6&&c>=0&&c<6)
 	{
 		Chessboard[r-1][c]=ChessboardLine;
 		
 	}
-	if(r>=0&&r<6&&(c+1)>=0&&(c+1)<7)
+	if(r>=0&&r<6&&(c+1)>=0&&(c+1)<6)
 	{
 		Chessboard[r][c+1]=ChessboardLine;
 		
 	}
-	if(r>=0&&r<6&&(c-1)>=0&&(c-1)<7)
+	if(r>=0&&r<6&&(c-1)>=0&&(c-1)<6)
 	{
 		Chessboard[r][c-1]=ChessboardLine;
 		
 	}
-	if((r-1)>=0&&(r-1)<6&&(c+1)>=0&&(c+1)<7)
+	if((r-1)>=0&&(r-1)<6&&(c+1)>=0&&(c+1)<6)
 	{
 		Chessboard[r-1][c+1]=ChessboardLine;
 		
 	}
-	if((r+1)>=0&&(r+1)<6&&(c-1)>=0&&(c-1)<7)
+	if((r+1)>=0&&(r+1)<6&&(c-1)>=0&&(c-1)<6)
 	{
 		Chessboard[r+1][c-1]=ChessboardLine;
 		
 	}
-	if((r+1)>=0&&(r+1)<6&&(c+1)>=0&&(c+1)<7)
+	if((r+1)>=0&&(r+1)<6&&(c+1)>=0&&(c+1)<6)
 	{
 		Chessboard[r+1][c+1]=ChessboardLine;
 		
 	}
-	if((r-1)>=0&&(r-1)<6&&(c-1)>=0&&(c-1)<7)
+	if((r-1)>=0&&(r-1)<6&&(c-1)>=0&&(c-1)<61
+			)
 	{
 		Chessboard[r-1][c-1]=ChessboardLine;
 		
@@ -337,7 +337,7 @@ public static char[][] FallDownChess(char[][] Chessboard,char ChessboardLine)
 	{
 		for(int r=0;r<=4;r++)
 		{
-			for(int c=6;c>=0;c--) {
+			for(int c=5;c>=0;c--) {
 				if(Chessboard[r][c]=='-'&&Chessboard[r+1][c]!='-')
 				{
 					Chessboard[r][c]=Chessboard[r+1][c];
