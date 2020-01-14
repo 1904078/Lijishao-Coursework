@@ -6,20 +6,23 @@ public class chess {
 		{
 			char ChessboardLine='-';
 			char[][] Chessboard=new char[6][7];
-			char[] chesspiece= {'X','O'};
+			char[] chesspiece= {'X','O'};//player 1:X; player 2:O
 			int[] timesOfBlitz= {1,1};//every player can play once
 			int[] timesOfTimeBomb={1,1};
 			//Initialize chess board elements
 			Initchessboard(Chessboard,ChessboardLine);
-			//Draw chess board
+			//Show chess board
 			DressBoard(Chessboard);
 			int totalChess=0;//The number of all pieces that have been placed
 	//The number of rounds,even numbers represent player 1 and odd numbers represent player 2;
 			int rounds=0;
-			int column=-1;
-			int placerow=-1;
+			int column=-1;//The column that player choose to place chess piece.
+			int placerow=-1;//It represents the line of a piece's whereabouts
+			//Record the location of each player's time bomb
 			int rowOfTimeBombOfPlay1=-1, columnOfTimeBombOfPlay1=-1;
 			int rowOfTimeBombOfPlay2=-1, columnOfTimeBombOfPlay2=-1;
+			//This variable is used to record the number of rounds after the time bomb is placed, 
+			//so as to determine the explosion time
 			int TimeBombRoundsOfPlay1=-1,TimeBombRoundsOfPlay2=-1;
 			while(totalChess<6*7)
 			{  
@@ -27,13 +30,13 @@ public class chess {
 				int modeAscii=InputMode(rounds,Chessboard,ChessboardLine);
 			    if(modeAscii==66)//B
 			    {  
-			    	if(timesOfBlitz[rounds%2]==1)
+			    	if(timesOfBlitz[rounds%2]==1)//It represents the player still has one chance.
 			    	{
 			    	System.out.printf("Blitz please select column >");
 			        column=Integer.parseInt(stdin.nextLine())-1;
 			    	for( int row=0;row<6;row++)
 			    	{
-			    		if(Chessboard[row][column]!=ChessboardLine)//clear
+			    		if(Chessboard[row][column]!=ChessboardLine)//To clear this column.
 			    		{   
 			    			Chessboard[row][column]=ChessboardLine;
 			    			totalChess=CountTotalChess(Chessboard,ChessboardLine);	
@@ -41,6 +44,7 @@ public class chess {
 			    	} 
 			    	DressBoard(Chessboard);
 			    	timesOfBlitz[rounds%2]--;
+			    	//The chance for this player to make the next instant bomb no longer exists.
 			    	rounds++;
 			    	}
 			    	else 
@@ -52,7 +56,7 @@ public class chess {
 			    {   
 			    	if(rounds%2==0)//play1
 			      {
-			    	if(timesOfTimeBomb[0]==1)//play1
+			    	if(timesOfTimeBomb[0]==1)//play1 has one chance of time bomb.
 		    		{  
 		    			System.out.printf("Time bomb please select column >");
 				        column=Integer.parseInt(stdin.nextLine())-1;
@@ -117,13 +121,16 @@ public class chess {
 				//Judge if anyone wins
 				if(judgeWinner(Chessboard,Chessboard[placerow][column],placerow,column))
 				{
-					System.out.printf("Congratulations,play %d wins",rounds%2);
+					System.out.printf("Congratulations,play %d wins",(rounds-1)%2+11
+							);
 					break;
 				}
 			    }
+			    // It's time to clear the counters surrounding the time bomb.
 			 if(TimeBombRoundsOfPlay1==rounds&&Chessboard[rowOfTimeBombOfPlay1][columnOfTimeBombOfPlay1]=='*')  
 			 {
 				 Chessboard=Bombtimebomb(Chessboard,rowOfTimeBombOfPlay1,columnOfTimeBombOfPlay1,ChessboardLine);
+				 //Drop the pieces to make sure the pieces in each row are arranged from the bottom up.
 				 Chessboard=FallDownChess(Chessboard,ChessboardLine);	
 				 DressBoard(Chessboard);
 				 totalChess=CountTotalChess(Chessboard,ChessboardLine);
