@@ -164,6 +164,25 @@ public class chess {
 	    }
 	    }	
 	    }
+	    public static void DressBoard(char[][] Chessboard)
+	    {
+	       for(int i=1;i<=Chessboard[0].length;i++)
+	      {
+	        System.out.printf("%d ",i);
+	      }
+	    	System.out.printf("\n");
+	    					
+	    	for(int i = Chessboard.length - 1;i >= 0;i--)
+	    	{
+	    		for(int j = 0;j < Chessboard[0].length;j++)
+	    		{
+	    			System.out.printf("%s",Chessboard[i][j]);
+	    			System.out.printf(" ");
+	    		}
+	    			System.out.printf("\n");
+	    						
+	    	}
+	    }
 	    public static int InputMode(int rounds,char[][] Chessboard,char ChessboardLine)
 	    {  
 	    	int i=rounds%2+1;//i==1:play1; i==2:play2
@@ -192,39 +211,6 @@ public class chess {
 		   }
 		    return modeAscii;
 	    }
-	    public static char[][] FallDownChess(char[][] Chessboard,char ChessboardLine)
-	    {
-	    	for(int times=0;times<=2;times++)
-	    	{
-	    		for(int r=0;r<=4;r++)
-	    		{
-	    			for(int c=6;c>=0;c--) {
-	    				if(Chessboard[r][c]=='-'&&Chessboard[r+1][c]!='-')
-	    				{
-	    					Chessboard[r][c]=Chessboard[r+1][c];
-	    					Chessboard[r+1][c]='-';
-	    				}
-	    			}
-	    		}
-	    	}
-	    	return Chessboard;
-	    }
-	    public static int CountTotalChess(char[][] Chessboard,char ChessboardLine)
-	    {
-	    	int totalChess=0;
-	    	for(int r=0;r<6;r++)
-	    	{
-	    		for(int c=0;c<7;c++)
-	    		{
-	    			if(Chessboard[r][c]!=ChessboardLine)
-	    			{
-	    				totalChess++;
-	    			}
-	    		}
-	    	}
-	    	return totalChess;
-	    }  
-		
 	    public static int Place(int column,int rounds,char[][] Chessboard,char ChessboardLine,char[] chesspiece)
 	    {
 	    	int Placerow=0;
@@ -244,29 +230,41 @@ public class chess {
 			DressBoard(Chessboard);	
 		return Placerow;
 	    }
-
-	 
-
+	    public static boolean IfCanPlacePiece(int column,char[][] Chessboard,char ChessboardLine)
+		 {       
+			boolean ifCanPlace =false;
+			int row=0;
+			for(row=0;row<6;row++)//row
+		{
+			if(Chessboard[row][column]==ChessboardLine)
+			{
+				ifCanPlace=true;
+				break;
+			}		
+		}
+			if(row==Chessboard.length) 
+		{   	ifCanPlace= false;
+				System.out.print("The column of you enter is full,please enter again\n");
+				
+		}
+		    return ifCanPlace;
+		}
 	   
-	    public static void DressBoard(char[][] Chessboard)
+	    public static int CountTotalChess(char[][] Chessboard,char ChessboardLine)
 	    {
-	       for(int i=1;i<=Chessboard[0].length;i++)
-	      {
-	        System.out.printf("%d ",i);
-	      }
-	    	System.out.printf("\n");
-	    					
-	    	for(int i = Chessboard.length - 1;i >= 0;i--)
+	    	int totalChess=0;
+	    	for(int r=0;r<6;r++)
 	    	{
-	    		for(int j = 0;j < Chessboard[0].length;j++)
+	    		for(int c=0;c<7;c++)
 	    		{
-	    			System.out.printf("%s",Chessboard[i][j]);
-	    			System.out.printf(" ");
+	    			if(Chessboard[r][c]!=ChessboardLine)
+	    			{
+	    				totalChess++;
+	    			}
 	    		}
-	    			System.out.printf("\n");
-	    						
 	    	}
-	    }
+	    	return totalChess;
+	    }  
 
 	public static boolean judgeWinner(char[][] Chessboard,char CurrentChess,int row,int column)
 	 {
@@ -288,25 +286,7 @@ public class chess {
 		  return 0;
 		  return SearchChessNumber(Chessboard, CurrentChess,r,c, i, j)+1;
 	}
-	public static boolean IfCanPlacePiece(int column,char[][] Chessboard,char ChessboardLine)
-	 {       
-		boolean ifCanPlace =false;
-		int row=0;
-		for(row=0;row<6;row++)//row
-	{
-		if(Chessboard[row][column]==ChessboardLine)
-		{
-			ifCanPlace=true;
-			break;
-		}		
-	}
-		if(row==Chessboard.length) 
-	{   	ifCanPlace= false;
-			System.out.print("The column of you enter is full,please enter again\n");
-			
-	}
-	    return ifCanPlace;
-	}
+	
 	public static char[][] Bombtimebomb(char[][] Chessboard,int r,int c ,char ChessboardLine)
 	{   Chessboard[r][c]=ChessboardLine;
 	if((r+1)>=0&&(r+1)<6&&c>=0&&c<7)
@@ -350,8 +330,25 @@ public class chess {
 	}
 		return Chessboard;
 	}
+	
+public static char[][] FallDownChess(char[][] Chessboard,char ChessboardLine)
+{
+	for(int times=0;times<=2;times++)
+	{
+		for(int r=0;r<=4;r++)
+		{
+			for(int c=6;c>=0;c--) {
+				if(Chessboard[r][c]=='-'&&Chessboard[r+1][c]!='-')
+				{
+					Chessboard[r][c]=Chessboard[r+1][c];
+					Chessboard[r+1][c]='-';
+				}
+			}
+		}
 	}
-
+	return Chessboard;
+}
+}
 
 
 		
